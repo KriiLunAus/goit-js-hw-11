@@ -29,6 +29,7 @@ button {
   border: none;
   background-color: #4e75ff;
   color: #fff;
+  cursor: pointer;
 }
 
 .fieldForToBeFilled {

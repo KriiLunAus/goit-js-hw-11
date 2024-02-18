@@ -37,30 +37,42 @@ function fetchPhoto() {
 //Added button usage
 
 btn.addEventListener("click", () => {
-photoList.innerHTML = "";
-    loaderShow();
-    setTimeout(() => {
-        fetchPhoto()
-            .then((photos) => {
-                if (imagesForSearch.value.length === 0) {
+    photoList.innerHTML = "";
+    if (imagesForSearch.value.length !== 0) {
+        loaderShow();
+        setTimeout(() => {
+            
+            fetchPhoto()
+                .then((photos) => {
+                    if (photos.hits.length === 0) {
+                        iziToast.error({
+                            message: "Sorry, there are no images matching your search query. Please try again!",
+                            position: "topRight",
+                        })
+                    } else {
+                        addElements(photos)
+                    }
+                })
+            
+                .catch((error) => {
                     iziToast.error({
-                        message: "Sorry, there are no images matching your search query. Please try again!",
-                        position: "topRight",
+                        position: "topRight"
                     })
-                } else {
-                    return addElements(photos)
-                }
-            })
-
-            .catch((error) => {
-                console.error(error)
-            })
-
-                loaderHide();
-
-         
-    }, 1500);
-})
+                })
+            
+                .finally(() => {
+                    loaderHide();
+                })
+            
+            
+        }, 1500);
+    } else {
+        iziToast.error({
+            message: "Field is empty. Please type something!",
+            position: "topRight"
+        })
+    }
+});
 
 
 //Added elements to page
